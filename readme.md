@@ -28,7 +28,7 @@ G is the generator of $$\ 𝔾_1 \$$, and H is the generator of $$\ 𝔾_2 \$$ .
 
 In the first part, use a Trusted Setup, and should be computed with a Multi-Party Computation (MPC). 
 
-The parameters are generated from random $$\ τ ∈ 𝔽_p \$$, and from this parameter we can compute $$\  [τ^i]_1 \$$ and \$$ [τ^i]_2 \$$ for i=0,...,n−1 : 
+The parameters are generated from random $$\ τ ∈ 𝔽_p \$$, and from this parameter we can compute $$\  [τ^i]_1 \$$ and $$\ [τ^i]_2 \$$ for i=0,...,n−1 : 
 
 $$\
 [τ^i]_1 = ([τ^0]_1, [τ^1]_1, [τ^2]_1,...,[τ^{n−1}]_1) 
