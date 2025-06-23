@@ -15,7 +15,7 @@ Proof: bn256.G1(109125106987faacf54260cb97d4e1d7d29be021e6ca5cea9db1f653cec39128
 Verification Passed? true
 ```
 
-$$\ xG ∈ 𝔾_1 $$\ defines a point (x.G ) on 1 curve ($$\ 𝔾_1 \$$) and $$\ xH ∈ 𝔾_2 \$$ defines a point (x.H ) on the other curve ($$\ 𝔾_2 \$$) . Notation used is: 
+$$\ xG ∈ 𝔾_1 \$$ defines a point (x.G ) on 1 curve ($$\ 𝔾_1 \$$) and $$\ xH ∈ 𝔾_2 \$$ defines a point (x.H ) on the other curve ($$\ 𝔾_2 \$$) . Notation used is: 
 
 $$\ [x]_1 = xG ∈ 𝔾_1 \$$
 $$\ [x]_2 = xH ∈ 𝔾_2 \$$
