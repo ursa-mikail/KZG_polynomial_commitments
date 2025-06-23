@@ -84,11 +84,14 @@ $$\ ê (π,[τ]_2−[z]_2)==ê (c−[y]_1,H) \$$
 Prover provides π and c are given by prover before, and where $$\ [τ]_2 \$$ is derived in the trusted setup, $$\ [z]_2 \$$ defines the point at which the polynomial has been evaluated with, and $$\ [y]_1 \$$ defines the claimed value of p(z) . 
 
 This works because: 
+
 $$\ ê (π,[τ]_2−[z]_2)==ê (c−[y]_1,H) \$$
+
 $$\ ⇒ ê ([q(τ)]_1,[τ−z]_2)==ê ([p(τ)]_1−[y]_1,H) \$$
+
 $$\ ⇒[q(τ)⋅(τ−z)]_T==[p(τ)−y]_T \$$
 
-Note that we have q(x)(x−z)=p(x)−y , and which can be rearranged as $$\ q(x)=\frac{p(x)−y}{x−z} \$$. 
+Note: we have q(x)(x−z)=p(x)−y , and which can be rearranged as $$\ q(x)=\frac{p(x)−y}{x−z} \$$. 
 This is evaluated at τ for the trusted setup and not known for $$\ q(τ) = \frac{p(τ)−y}{τ−z} \$$.
 
 
