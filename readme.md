@@ -33,6 +33,7 @@ The parameters are generated from random $$\ τ ∈ 𝔽_p \$$, and from this pa
 $$\
 [τ^i]_1 = ([τ^0]_1, [τ^1]_1, [τ^2]_1,...,[τ^{n−1}]_1) 
 \$$
+
 $$\
 [τ^i]_2 = ([τ^0]_2, [τ^1]_2, [τ^2]_2,...,[τ^{n−1}]_2) 
 \$$
@@ -40,10 +41,13 @@ $$\
 Which in additive representation is: 
 $$\
 (G,τG,τ^2 G,...,τ^{n−1} G) ∈ 𝔾1 
+\$$
+
+$$\
 (H,τH,τ^2 H,...,τ^{n−1} H) ∈ 𝔾2 
 \$$
 
-In this stage we have taken a random value (τ ) and produced a tuple of size d+1 and where d is the polynomial degree of our target polynomial. We end up with $$\ {G,τG,τ^2 G,τ^3 G,…,τ^d G} \$$. After generating this, the random value of **τ should be deleted** .
+In this stage, we have taken a random value (τ ) and produced a tuple of size d+1 and where d is the polynomial degree of our target polynomial. We end up with $$\ {G,τG,τ^2 G,τ^3 G,…,τ^d G} \$$. After generating this, the random value of **τ should be deleted** .
 
 ## Commitment 
 
