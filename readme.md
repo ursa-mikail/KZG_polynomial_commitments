@@ -69,7 +69,7 @@ Prover computes p(z)=y , and a quotient polynomial is derived as:
 $$\ q(x) = \frac{p(x)−y}{x−z} \$$. 
 
 This polynomial proves that p(z)=y , and where p(x)−y is divisible by x−z . 
-This means it has a root at z - as p(z)−y=0 . 
+This means it has a root at z, as p(z)−y = 0 . 
 
 The evaluation proof is: $$\ π = [q(τ)]_1 \$$ and which is determine from $$\ π = ∑^{deg(q(x))} _{i=0} [τ^i]⋅q_i \$$
 
