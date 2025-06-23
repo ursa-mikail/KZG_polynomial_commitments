@@ -1,14 +1,26 @@
 # KZG polynomial commitment scheme 
 
-KZG polynomial commitment scheme allows a committer (Prover) to commit to a polynomial with a short string. Verifier can send Prover a challenge, and of which she creates a proof against the committed polynomial. It has applications into Credentials and Selective Disclosure of Signed Data. ZKS (zero-knowledge sets), and Veriable Secret Sharing (VSS). We will use a commitment to the polynomial of $$\ x^3+x+5 \$$.
+KZG polynomial commitment scheme allows a committer (Prover) to commit to a polynomial with a short string. Verifier can send Prover a challenge, and of which she creates a proof against the committed polynomial. It has applications into Credentials and Selective Disclosure of Signed Data. ZKS (zero-knowledge sets), and Veriable Secret Sharing (VSS). 
+We generate an order of polynomial, and send a random Evaluation Point z: 
 
+```
+go run main.go -z 300 -deg 7
+==== KZG Polynomial Commitment Proof ====
+Polynomial: 6x⁷ + 5x⁶ + x⁴ + 4x³ + 9x² + 8x¹ + 0
 
-$$\ xG ∈ 𝔾_1 $$\ defines a point (x.G ) on 1 curve ($$\ 𝔾_1 \$$) and $$\ xH ∈ 𝔾_2 \$$ defines a point (x.H ) on the other curve ($$\ 𝔾_2 \$$) . The notation used is: 
+Evaluation Point z: 300
+Expected y = p(z): 1315845008208812400
+Commitment: bn256.G1(25dd18a1a425edf06634351689bcfe83ce772b87b8d329d660f4205b8fee3661, 059405e251b41a316cc1446bc121301ee0e8e14157ea376e3343d5a315f1e87c)
+Proof: bn256.G1(109125106987faacf54260cb97d4e1d7d29be021e6ca5cea9db1f653cec39128, 2cbde997eb486e6eb28c78cee79562f93e2afd6e3073b70e76db5d713094279a)
+Verification Passed? true
+```
+
+$$\ xG ∈ 𝔾_1 $$\ defines a point (x.G ) on 1 curve ($$\ 𝔾_1 \$$) and $$\ xH ∈ 𝔾_2 \$$ defines a point (x.H ) on the other curve ($$\ 𝔾_2 \$$) . Notation used is: 
 
 $$\ [x]_1 = xG ∈ 𝔾_1 \$$
 $$\ [x]_2 = xH ∈ 𝔾_2 \$$
 
-and $$\ 𝔾_1 = ⟨G⟩ and 𝔾_2 = ⟨H⟩ \$$. 
+and $$\ 𝔾_1 = ⟨G⟩  \$$ and $$\ 𝔾_2 = ⟨H⟩ \$$. 
 
 G is the generator of $$\ 𝔾_1 \$$, and H is the generator of $$\ 𝔾_2 \$$ .
 
