@@ -28,10 +28,12 @@ G is the generator of $$\ 𝔾_1 \$$, and H is the generator of $$\ 𝔾_2 \$$ .
 
 In the first part, use a Trusted Setup, and should be computed with a Multi-Party Computation (MPC). 
 
-The parameters are generated from random τ∈𝔽p , and from this parameter we can compute [τi]1 and [τi]2 for i=0,...,n−1 : 
+The parameters are generated from random $$\ τ ∈ 𝔽_p \$$, and from this parameter we can compute $$\  [τ^i]_1 \$$ and \$$ [τ^i]_2 \$$ for i=0,...,n−1 : 
 
 $$\
 [τ^i]_1 = ([τ^0]_1, [τ^1]_1, [τ^2]_1,...,[τ^{n−1}]_1) 
+\$$
+$$\
 [τ^i]_2 = ([τ^0]_2, [τ^1]_2, [τ^2]_2,...,[τ^{n−1}]_2) 
 \$$
 
@@ -41,7 +43,7 @@ $$\
 (H,τH,τ^2 H,...,τ^{n−1} H) ∈ 𝔾2 
 \$$
 
-In this stage we have taken a random value (τ ) and produced a tuple of size d+1 and where d is the polynomial degree of our target polynomial. We end up with $$\ {G,τG,τ^2 G,τ^3 G,…,τ^d G} \$$. After generating this, the random value of ** τ should be deleted ** .
+In this stage we have taken a random value (τ ) and produced a tuple of size d+1 and where d is the polynomial degree of our target polynomial. We end up with $$\ {G,τG,τ^2 G,τ^3 G,…,τ^d G} \$$. After generating this, the random value of **τ should be deleted** .
 
 ## Commitment 
 
