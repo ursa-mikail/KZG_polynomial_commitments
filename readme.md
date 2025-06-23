@@ -77,7 +77,6 @@ Prover can send this evaluation proof π to Verifier.
 
 ## Verifying the proof 
 
-""" to be continued ...
 Verifier has the commitment of $$\ c=[p(τ)]_1 \$$ , the evaluation of y=p(z) , and the proof of $$\ π=[q(τ)]_1 \$$ . He can now check the pairing of: 
 
 $$\ ê (π,[τ]_2−[z]_2)==ê (c−[y]_1,H) \$$
