@@ -95,8 +95,7 @@ Note: we have q(x)(x−z)=p(x)−y , and which can be rearranged as $$\ q(x)=\fr
 This is evaluated at τ for the trusted setup and not known for $$\ q(τ) = \frac{p(τ)−y}{τ−z} \$$.
 
 
-"""
-
+```
 make init         # initialize module and tidy
 make build        # compile the project
 make run          # run with default args
@@ -129,3 +128,4 @@ Running `docker system prune -a --volumes`:
 - Deletes all unused networks.
 
 Don't use this on a production system or without backups.
+```
