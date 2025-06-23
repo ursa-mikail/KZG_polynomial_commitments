@@ -1,0 +1,140 @@
+
+package main
+
+import (
+	"crypto/sha256"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"log"
+	"math/big"
+	"math/rand"
+	"time"
+
+	zzz "github.com/arnaucube/kzg-commitments-study"
+)
+
+type Output struct {
+	Z          string `json:"z"`
+	Y          string `json:"y"`
+	Polynomial string `json:"polynomial"`
+	Commitment string `json:"commitment"`
+	Proof      string `json:"proof"`
+	Verified   bool   `json:"verified"`
+}
+
+// Evaluate the polynomial at x using big.Int arithmetic
+func evaluatePolynomialBigInt(p []*big.Int, x *big.Int) *big.Int {
+	result := big.NewInt(0)
+	xPower := big.NewInt(1)
+	for _, coeff := range p {
+		term := new(big.Int).Mul(coeff, xPower)
+		result.Add(result, term)
+		xPower.Mul(xPower, x)
+	}
+	return result
+}
+
+// Generate a random polynomial with coefficients in [0,9]
+func generateRandomPolynomial(degree int, seed int64) []*big.Int {
+	rng := rand.New(rand.NewSource(seed))
+	p := make([]*big.Int, degree+1)
+	for i := range p {
+		p[i] = big.NewInt(rng.Int63n(10))
+	}
+	return p
+}
+
+// Generate and verify the KZG proof
+func runProof(ts *zzz.TrustedSetup, p []*big.Int, z *big.Int, y *big.Int) (string, bool) {
+	proof, err := zzz.EvaluationProof(ts, p, z, y)
+	if err != nil {
+		log.Fatalf("Failed to generate proof: %v", err)
+	}
+	c := zzz.Commit(ts, p)
+	ok := zzz.Verify(ts, c, proof, z, y)
+	return proof.String(), ok
+}
+
+func main() {
+	// === Flags ===
+	degreeFlag := flag.Int("deg", 3, "Degree of the polynomial")
+	seedFlag := flag.Int64("seed", time.Now().Unix(), "Random seed for polynomial generation")
+	jsonFlag := flag.Bool("json", false, "Output as JSON")
+
+	flag.Parse()
+
+	// === Generate polynomial ===
+	p := generateRandomPolynomial(*degreeFlag, *seedFlag)
+
+	// === Trusted setup ===
+	ts, err := zzz.NewTrustedSetup(len(p))
+	if err != nil {
+		log.Fatalf("Failed to create trusted setup: %v", err)
+	}
+
+	// === Compute commitment ===
+	commitment := zzz.Commit(ts, p)
+	commitmentBytes := []byte(commitment.String())
+
+	// === Fiat-Shamir: derive challenge z = H(commitment) ===
+	hash := sha256.Sum256(commitmentBytes)
+	z := new(big.Int).SetBytes(hash[:])
+
+	// === Evaluate polynomial at z ===
+	y := evaluatePolynomialBigInt(p, z)
+
+	// === Generate proof and verify ===
+	proofStr, verified := runProof(ts, p, z, y)
+
+	// === Output ===
+	out := Output{
+		Z:          z.String(),
+		Y:          y.String(),
+		Polynomial: zzz.PolynomialToString(p),
+		Commitment: commitment.String(),
+		Proof:      proofStr,
+		Verified:   verified,
+	}
+
+	if *jsonFlag {
+		prettyJSON, _ := json.MarshalIndent(out, "", "  ")
+		fmt.Println(string(prettyJSON))
+	} else {
+		fmt.Println("==== KZG Polynomial Commitment Proof ====")
+		fmt.Printf("Polynomial: %s\n", out.Polynomial)
+		fmt.Printf("Evaluation Point z: %s\n", out.Z)
+		fmt.Printf("Expected y = p(z): %s\n", out.Y)
+		fmt.Printf("Commitment: %s\n", out.Commitment)
+		fmt.Printf("Proof: %s\n", out.Proof)
+		fmt.Printf("Verification Passed? %v\n", out.Verified)
+	}
+}
+
+/*
+go mod init trial_kzg
+go mod tidy
+go run main.go
+
+go run main.go -z 4 -deg 5 -seed 123 -json
+
+session-specific domain separation (e.g. hash(domain || commitment)),
+✅ Proper Fiat-Shamir transform (z = H(commitment))
+✅ Full big.Int polynomial evaluation (no int64 truncation)
+
+This deterministically derives the challenge z from the commitment.
+✅ It's unpredictable by the prover before the commitment is made.
+✅ It's replay-resistant, because it ties the challenge to the commitment.
+❌ But it's not random — it’s deterministic given the commitment.
+
+go run main.go -deg 7 -json
+
+{
+  "z": "86345109878184742131080630804696414249809344752657970373177739205185234499045",
+  "y": "35781968207450580939087747596469979299199956242389608341613963173018626948342862065448236295290668029482709159716955378778747445838677089620681790943458277350086079041250288492646124409366010557889153273848131848276445716031416746963331406359389157815951230748483510046063956331931025422627509237674190064730881792576391787552755870884327784688141760705023077206001509331473345531576850102292894065302881325598504435744730424057433168996514726257866135640938204388826189809883848234837329992143441338145458969191068727071244594982991564877",
+  "polynomial": "x⁷ + 9x⁶ + 6x⁵ + 7x⁴ + 5x³ + 4x² + 6x¹ + 7",
+  "commitment": "bn256.G1(0fa9c88f3d7b33097d08e164733db37dc666e8fe8b948480d564a0f785c04559, 188281df54f8a785eefd348ba0425bdbb843c3baa94e5e24618b7d6291fd655b)",
+  "proof": "bn256.G1(28fd99ac82e6e630ef67f1c6d5fa40223969d1c404bd5cd3de681644fef4b224, 0dec28a3de64e2dd169a6dec95a7926b9d26925350972737511f76066d66d307)",
+  "verified": true
+}
+*/

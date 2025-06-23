@@ -1,0 +1,60 @@
+package main
+
+import (
+	"fmt"
+	"math"
+	"math/big"
+	"os"
+	"strconv"
+
+	zzz "github.com/arnaucube/kzg-commitments-study"
+)
+
+func powInt(x, y int) int {
+	return int(math.Pow(float64(x), float64(y)))
+}
+func main() {
+
+	argCount := len(os.Args[1:])
+	z1 := 3
+
+	if argCount > 0 {
+		z1, _ = strconv.Atoi(os.Args[1])
+
+	}
+	p := []*big.Int{
+		big.NewInt(5),
+		big.NewInt(1), // x^1
+		big.NewInt(0), // x^2
+		big.NewInt(1), // x^3
+	}
+
+	// TrustedSetup
+	ts, _ := zzz.NewTrustedSetup(len(p))
+
+	// Commit
+	c := zzz.Commit(ts, p)
+
+	y1 := powInt(z1, 3) + z1 + 5
+	// p(z)=y --> p(3)=35
+	z := big.NewInt(int64(z1))
+	y := big.NewInt(int64(y1))
+
+	fmt.Printf("%v\n", y)
+	// z & y: to prove an evaluation p(z)=y
+	proof, _ := zzz.EvaluationProof(ts, p, z, y)
+
+	// verification
+	v := zzz.Verify(ts, c, proof, z, y)
+	fmt.Printf("Polynomial: %s\n\n", zzz.PolynomialToString(p))
+	fmt.Printf("Ts=%v\n\nz=%v\n\ny=%v\n\n", ts, z, y)
+	fmt.Printf("Proof: %s\n\n", proof)
+	fmt.Printf("Verified: %v", v)
+
+}
+
+/*
+go mod init trial_kzg
+go mod tidy
+go run main.go
+*/
