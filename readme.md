@@ -52,16 +52,16 @@ In this stage, we have taken a random value (τ ) and produced a tuple of size d
 
 ## Commitment 
 
-With this we have a polynomial of $$\ p(x)=∑^n _{i=0} p_i x^i \$$, 
+With this, we have a polynomial of $$\ p(x)=∑^n _{i=0} p_i x^i \$$, 
 
-and then can create a commitment with: 
+and we can create a commitment with: 
 $$\ c=[p(τ)]_1 \$$
 
 where $$\ c = ∑^{deg(p(x))} _{i=0} [τ^i]⋅p_i \$$
 
 Prover would send this commitment c to Verifier as a proof against the polynomial. 
-Verifier would choose a value $$\ z ∈ 𝔽_p \$$, 
-where $$\ 𝔽_p \$$ := finite field defined by the polynomial. 
+Verifier would choose a value $$\ z ∈ \digamma _p \$$, 
+where $$\ \digamma _p \$$ := finite field defined by the polynomial. 
 
 ## Evaluating the proof 
 
