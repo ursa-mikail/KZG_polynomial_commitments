@@ -39,6 +39,7 @@ $$\
 \$$
 
 Which in additive representation is: 
+
 $$\
 (G,τG,τ^2 G,...,τ^{n−1} G) ∈ 𝔾1 
 \$$
