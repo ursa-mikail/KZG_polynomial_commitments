@@ -1,4 +1,4 @@
-# KZG polynomial commitment scheme 
+# KZG (Kate-Zaverucha-Goldberg) Polynomial Commitment Scheme
 
 KZG polynomial commitment scheme allows a committer (Prover) to commit to a polynomial with a short string. Verifier can send Prover a challenge, and of which she creates a proof against the committed polynomial. It has applications into Credentials and Selective Disclosure of Signed Data. ZKS (zero-knowledge sets), and Veriable Secret Sharing (VSS). 
 We generate an order of polynomial, and send a random Evaluation Point z: 
@@ -129,3 +129,155 @@ Running `docker system prune -a --volumes`:
 
 Don't use this on a production system or without backups.
 ```
+
+✅ Key Features:
+- Constant-size commitment
+- Constant-size proof
+- Efficient verification
+- Trusted setup required (a structured reference string)
+
+
+KZG is used to:
+- Commit to model weights
+- Prove correct evaluation of forward passes
+- Ensure integrity of cryptographic hash chains over model operations
+
+
+| AI/ML Scenario       | How KZG Helps                          | Benefit                            |
+| -------------------- | -------------------------------------- | ---------------------------------- |
+| Verifiable Inference | Commit to model + prove correct output | Offload compute securely           |
+| Federated Learning   | Commit to private updates              | Privacy + auditability             |
+| ZKML                 | Commit to models in ZK circuits        | Private + trustless inference      |
+| Data Integrity       | Commit to training data                | Prevent tampering                  |
+| On-chain AI          | Commit to models/inference proofs      | Efficient, trust-minimized compute |
+
+
+
+## 🔹 Use Case: Data Availability Sampling in Ethereum (EIP-4844 / Proto-Danksharding)
+🧩 Problem:
+In Ethereum scaling (e.g., rollups), large blobs of data (like execution traces or rollup state transitions) need to be published to L1 but don’t need to be read by every node — only verifiably available.
+
+But how can Ethereum verify large data blobs are available without every node downloading all of it?
+
+## 🔹 Use Case: Data Availability Sampling in AI/ML
+🧩 Problem:
+Large blobs of data (like execution traces or data updates or builds updates state transitions) need to be published but don’t need to be read by every package and data blob — only verifiably available.
+
+But how can AI/ML verify large data blobs and build packages are available without every computational node downloading all of it?
+
+🔐 Why It’s Good:
+- Efficient: Fast verification, constant size.
+- Succinct: Short commitments and proofs.
+- Scalable: Ideal for L2 scaling and ZK-rollups.
+- Trusted Setup: Needs one-time setup, but reused across many applications (e.g., Ethereum’s KZG CRS).
+
+
+### ✅ Solution with KZG Commitments:
+1. Polynomial Representation:
+- The data blob (e.g., a 4096-byte chunk) is interpreted as evaluations of a polynomial 𝑓 ( 𝑥 ) f(x) over a finite field at various points. 
+- So the blob becomes values like 𝑓 ( 1 ) , 𝑓 ( 2 ) , . . . , 𝑓 ( 𝑛 ).
+
+2. Commitment:
+- A single KZG commitment to the polynomial is published on-chain.
+- This commitment is a short cryptographic object (constant size, e.g., 48 bytes with BLS12-381 curve).
+
+3. Sampling: 
+- Light clients or full nodes randomly sample a few indices $$\ 𝑥_𝑖 ​ \$$ from the blob. 
+- The blob producer (e.g., a rollup operator) then sends a KZG proof that $$\ 𝑓 ( 𝑥_𝑖 ) = 𝑦_𝑖 ​ \$$ for each requested $$\ 𝑥_𝑖 ​ \$$.
+
+4. Verification:
+- The KZG proof is constant size and can be verified quickly using pairing operations.
+- If enough sampled points verify correctly, the blob is assumed to be available with high probability.
+
+
+📦 Other Use Cases:
+1. Zero-Knowledge Proofs (e.g., PLONK, zk-SNARKs):
+KZG is used to commit to witness polynomials and prove that computations were done correctly.
+
+2. Verifiable Computation:
+You can outsource computation over polynomials and verify results efficiently.
+
+3. Verifiable Secret Sharing (VSS):
+Share a secret via Shamir’s scheme, commit to the polynomial, and let receivers verify their shares.
+
+## ✅ AI/ML Use Cases for KZG Polynomial Commitments
+1. Verifiable Machine Learning (VML)
+Use case: Ensuring the correctness of ML inference or training outsourced to an untrusted party.
+
+Example:
+A model owner outsources inference (or part of training) to a third party (e.g., edge devices, cloud compute).
+
+The model is expressed via polynomials (common in ZKML pipelines — e.g., ReLU approximated with polynomials).
+
+The prover commits to the polynomial representation of the model and inputs using KZG.
+
+They return:
+- The inference result
+- KZG proofs showing correct evaluation at specific points
+
+✅ Benefit: A verifier (e.g., a client or auditor) checks that the model output was computed faithfully, without needing to run the full model themselves.
+
+2. Privacy-Preserving Federated Learning
+Use case: Multiple parties collaboratively train a model, but want privacy and integrity guarantees.
+
+Scenario:
+Each participant shares model updates.
+
+Instead of sharing raw data or even full gradient vectors, participants:
+- Encode their updates as polynomials
+- Commit to them using KZG
+- Optionally prove integrity of the data (e.g., constraints were followed)
+
+✅ Benefit: The aggregator can verify that participants are behaving honestly without seeing the private data.
+
+
+3. Zero-Knowledge ML Inference
+Use case: Prove that a model made a decision correctly without revealing the model or the input.
+
+Example:
+A loan approval system runs an ML model.
+
+The system wants to prove that a user was denied based on fair and agreed-upon logic, without leaking sensitive financial data.
+
+Using ZK-SNARKs + KZG:
+- Encode the model as polynomials (e.g., arithmetic circuits, quantized networks).
+- Commit to model and input with KZG.
+- Publish constant-size proof of correct inference.
+
+✅ Benefit: Enables auditable AI with privacy.
+
+
+4. Data Provenance & Integrity
+Use case: AI models are trained on datasets that must be verified for integrity (e.g., medical data, sensitive research).
+
+Each data provider encodes their dataset into a polynomial.
+
+KZG commitment ensures:
+- That the data has not been tampered with.
+- That any claimed data was actually used.
+
+✅ Benefit: Tamper-proof audits of data used in ML models.
+
+5. On-Chain or Verifiable AI Inference (Web3 + AI)
+Use case: Models served on decentralized platforms or L2 chains need trustless inference guarantees.
+
+KZG enables committing to the model weights (or even quantized model architectures).
+
+Inference done off-chain returns a proof using KZG + zk-SNARK that the model evaluated properly.
+
+Only commitment and verification on-chain.
+
+✅ Benefit: Verifiable off-chain compute with low cost on-chain commitments.
+
+
+
+
+| Feature           | KZG Commitment                                |
+| ----------------- | --------------------------------------------- |
+| Commitment Size   | Constant                                      |
+| Proof Size        | Constant                                      |
+| Verification Time | Fast (pairing)                                |
+| Trusted Setup     | Yes                                           |
+| Used in           | Ethereum (EIP-4844), PLONK, zkEVM, ZK-Rollups |
+
+
