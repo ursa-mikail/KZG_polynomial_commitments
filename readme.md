@@ -142,6 +142,8 @@ KZG is used to:
 - Prove correct evaluation of forward passes
 - Ensure integrity of cryptographic hash chains over model operations
 
+For building ZK + AI systems, KZG is a fit for proving things about polynomials with constant-size, fast-verifying proofs — which is how ZK-ML circuits encode logic.
+
 
 | AI/ML Scenario       | How KZG Helps                          | Benefit                            |
 | -------------------- | -------------------------------------- | ---------------------------------- |
